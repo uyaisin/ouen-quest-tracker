@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>47都道府県 主催・運営マップ｜全国！応援AI共創クエスト</title>
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:"Hiragino Kaku Gothic ProN","Hiragino Sans","Yu Gothic",sans-serif;
+         background:#fff; color:#33363F; padding-bottom:48px; }
+  .hero { background:#FFF8F2; padding:36px 16px 28px; text-align:center;
+          border-bottom:3px solid #ffd54f; }
+  .hero .tag { display:inline-block; font-size:13px; font-weight:700; color:#d8243c;
+               letter-spacing:.18em; margin-bottom:10px; }
+  .hero h1 { font-size:25px; font-weight:800; color:#33363F; margin-bottom:10px; line-height:1.5; }
+  .hero h1 .mk { background:linear-gradient(transparent 62%, #ffd54f 62%); padding:0 2px; }
+  .hero .hsub { font-size:14px; font-weight:700; color:#8b0a1f; margin-bottom:14px; }
+  .hero .days { display:inline-block; background:#8b0a1f; color:#fff; font-size:13px; font-weight:700;
+                padding:7px 18px; border-radius:999px; }
+  .wrap { max-width:760px; margin:0 auto; padding:20px 16px 0; }
+  .cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(150px,1fr)); gap:12px; margin-bottom:14px; }
+  .card { background:#fff; border:1px solid #ecd8da; border-radius:10px; padding:14px 16px; }
+  .card .label { font-size:12px; font-weight:700; color:#8a8f99; margin-bottom:2px; }
+  .card .num { font-size:26px; font-weight:800; color:#33363F; }
+  .card .unit { font-size:13px; color:#8a8f99; font-weight:400; }
+  .ok-num { color:#d8243c; } .mid-num { color:#c07f00; }
+  .quest { background:#fff; border:1px solid #ecd8da; border-radius:10px; padding:12px 16px; margin-bottom:12px; }
+  .quest .qlabel { display:flex; justify-content:space-between; font-size:13px; font-weight:700;
+                   margin-bottom:6px; color:#33363F; }
+  .quest .qlabel b { color:#8b0a1f; }
+  .qbar { height:12px; background:#f2f2f2; border-radius:6px; overflow:hidden; }
+  .qfill { height:100%; background:linear-gradient(90deg,#ffd54f,#d8243c); border-radius:6px; transition:width .4s; }
+  .legend { display:flex; flex-wrap:wrap; gap:14px; font-size:12px; color:#5a5f6a; margin:0 2px 20px; }
+  .region { display:flex; gap:10px; margin-bottom:12px; align-items:flex-start; }
+  .rname { width:86px; flex-shrink:0; font-size:12px; font-weight:700; color:#8a8f99; padding-top:11px; }
+  .tiles { display:flex; flex-wrap:wrap; gap:6px; }
+  .tile { display:inline-flex; flex-direction:column; align-items:center; padding:6px 10px;
+          border-radius:8px; cursor:pointer; border:1px solid #e3e3e3; background:#fff;
+          transition:transform .1s; }
+  .tile:hover { transform:translateY(-2px); }
+  .tile .pn { font-size:13px; } .tile .cnt { font-size:11px; }
+  .t-ok { background:#fbe9ec; border-color:#d8243c; }
+  .t-ok .pn { color:#8b0a1f; font-weight:800; } .t-ok .cnt { color:#d8243c; }
+  .t-mid { background:#fff6e0; border-color:#e0a92e; } .t-mid .pn { color:#7a5410; font-weight:700; } .t-mid .cnt { color:#c07f00; }
+  .t-none .pn { color:#9aa0aa; } .t-none .cnt { color:#c3c8d0; }
+  #detail { background:#FFF8F2; border:1px solid #ecd8da; border-radius:10px; padding:14px 16px;
+            margin-top:20px; font-size:14px; display:none; }
+  #detail h2 { font-size:15px; margin-bottom:8px; color:#8b0a1f; }
+  #detail p { margin-bottom:4px; color:#5a5f6a; }
+  .foot { margin-top:28px; font-size:12px; color:#b0b5be; text-align:center; }
+  @media (max-width:520px) { .rname { width:100%; padding-top:0; } .region { flex-direction:column; gap:4px; }
+    .hero h1 { font-size:20px; } }
+  body.embed .hero { padding:22px 16px 18px; }
+  body.embed .hero .tag { display:none; }
+  body.embed .hero h1 { font-size:20px; }
+  body.embed .foot { display:none; }
+  body.embed { padding-bottom:16px; }
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="tag">全国！応援AI共創クエスト</div>
+  <h1><span class="mk">47都道府県 主催・運営マップ</span></h1>
+  <div class="hsub">目標は、全国の主催者・運営メンバーあわせて300人！</div>
+  <div class="days">出版まで残り59日（2026.9.2）｜更新 2026-07-05</div>
+</div>
+<div class="wrap">
+  <div class="cards" id="cards"></div>
+  <div class="quest">
+    <div class="qlabel"><span>🚩 旗が立った県（主催1人＋運営2人以上）</span><b id="qpct">0%</b></div>
+    <div class="qbar"><div class="qfill" id="qfill" style="width:0%"></div></div>
+  </div>
+  <div class="quest">
+    <div class="qlabel"><span>🤝 全国の仲間（目標300人）</span><b id="ppct">0人</b></div>
+    <div class="qbar"><div class="qfill" id="pfill" style="width:0%"></div></div>
+  </div>
+  <div class="legend">
+    <span>🚩 旗が立った（主催1人＋運営2人以上）</span>
+    <span>⛺ 立ち上げ中</span>
+    <span style="color:#9aa0aa;">□ まだ誰もいない — あなたの県かも！</span>
+  </div>
+  <div id="regions"></div>
+  <div id="detail"></div>
+  <div class="foot">出版共創プロジェクト｜一人で頑張らない、みんなで届ける</div>
+</div>
+<script>
+if (new URLSearchParams(location.search).get("embed") === "1") document.body.classList.add("embed");
+const DATA = {"北海道・東北":[["北海道",0,0,[],[]],["青森",0,0,[],[]],["岩手",0,0,[],[]],["宮城",0,0,[],[]],["秋田",0,0,[],[]],["山形",0,0,[],[]],["福島",0,0,[],[]]],"関東":[["茨城",0,0,[],[]],["栃木",0,0,[],[]],["群馬",0,0,[],[]],["埼玉",0,0,[],[]],["千葉",0,0,[],[]],["東京",0,0,[],[]],["神奈川",0,0,[],[]]],"中部":[["新潟",0,0,[],[]],["富山",0,0,[],[]],["石川",0,0,[],[]],["福井",0,0,[],[]],["山梨",0,0,[],[]],["長野",0,0,[],[]],["岐阜",0,0,[],[]],["静岡",0,0,[],[]],["愛知",0,0,[],[]]],"近畿":[["三重",0,0,[],[]],["滋賀",0,0,[],[]],["京都",0,0,[],[]],["大阪",0,0,[],[]],["兵庫",0,0,[],[]],["奈良",0,0,[],[]],["和歌山",0,0,[],[]]],"中国・四国":[["鳥取",0,0,[],[]],["島根",0,0,[],[]],["岡山",0,0,[],[]],["広島",0,0,[],[]],["山口",0,0,[],[]],["徳島",0,0,[],[]],["香川",0,0,[],[]],["愛媛",0,0,[],[]],["高知",0,0,[],[]]],"九州・沖縄":[["福岡",0,0,[],[]],["佐賀",0,0,[],[]],["長崎",0,0,[],[]],["熊本",0,0,[],[]],["大分",0,0,[],[]],["宮崎",0,0,[],[]],["鹿児島",0,0,[],[]],["沖縄",0,0,[],[]]],"オンライン":[["オンライン",0,0,[],[]]]};
+const TH = 2, GOAL = 300;
+function stateOf(s, u) { if (s >= 1 && u >= TH) return "ok"; if (s + u > 0) return "mid"; return "none"; }
+const MARK = { ok: "🚩", mid: "⛺", none: "" };
+function render() {
+  let c = {ok:0, mid:0, none:0}, ts = 0, tu = 0, html = "";
+  for (const [region, prefs] of Object.entries(DATA)) {
+    const isOnline = region === "オンライン";
+    html += '<div class="region"><div class="rname">' + region + '</div><div class="tiles">';
+    for (const [name, s, u] of prefs) {
+      const st = stateOf(s, u);
+      if (!isOnline) c[st]++;
+      ts += s; tu += u;
+      html += '<span class="tile t-' + st + '" onclick="showDetail(\'' + name + '\')">' +
+        '<span class="pn">' + (MARK[st] ? MARK[st] + " " : "") + (isOnline ? "🌐 " + name : name) + '</span>' +
+        '<span class="cnt">主' + s + '・運' + u + '</span></span>';
+    }
+    html += '</div></div>';
+  }
+  document.getElementById("regions").innerHTML = html;
+  const people = ts + tu;
+  document.getElementById("cards").innerHTML =
+    '<div class="card"><div class="label">🚩 旗が立った県</div><div class="num ok-num">' + c.ok + ' <span class="unit">/ 47県</span></div></div>' +
+    '<div class="card"><div class="label">⛺ 立ち上げ中</div><div class="num mid-num">' + c.mid + '<span class="unit">県</span></div></div>' +
+    '<div class="card"><div class="label">まだ誰もいない</div><div class="num">' + c.none + '<span class="unit">県</span></div></div>' +
+    '<div class="card"><div class="label">🤝 全国の仲間</div><div class="num">' + people + ' <span class="unit">/ 300人（主' + ts + '・運' + tu + '）</span></div></div>';
+  const pct = Math.round(c.ok / 47 * 100);
+  document.getElementById("qpct").textContent = pct + "%（" + c.ok + "/47）";
+  document.getElementById("qfill").style.width = Math.max(pct, c.ok > 0 ? 3 : 0) + "%";
+  const ppct = Math.min(100, Math.round(people / GOAL * 100));
+  document.getElementById("ppct").textContent = people + "人 / 300人（" + ppct + "%）";
+  document.getElementById("pfill").style.width = Math.max(ppct, people > 0 ? 3 : 0) + "%";
+}
+function showDetail(pref) {
+  for (const prefs of Object.values(DATA)) {
+    for (const [name, s, u, sn, un] of prefs) {
+      if (name !== pref) continue;
+      const box = document.getElementById("detail");
+      const fmt = (arr, n) => arr.length ? arr.join("、") + (arr.length < n ? "（ほか" + (n - arr.length) + "名）" : "") : (n > 0 ? n + "名" : "まだいません");
+      box.innerHTML = "<h2>" + name + "</h2><p>主催者: " + fmt(sn, s) + "</p><p>運営メンバー: " + fmt(un, u) + "</p>";
+      box.style.display = "block";
+      box.scrollIntoView({behavior: "smooth", block: "nearest"});
+      return;
+    }
+  }
+}
+render();
+</script>
+</body>
+</html>

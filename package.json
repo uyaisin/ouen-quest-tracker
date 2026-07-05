@@ -1,0 +1,14 @@
+{
+  "name": "ouen-quest-tracker",
+  "private": true,
+  "version": "1.0.0",
+  "description": "47都道府県 主催・運営マップ（シート→HTML→PNG→GitHub Pages 自動更新）",
+  "scripts": {
+    "build": "node build.js",
+    "render": "node scripts/render_png.js",
+    "update": "node scripts/pull_data.js && node build.js && node scripts/render_png.js"
+  },
+  "devDependencies": {
+    "playwright": "^1.48.0"
+  }
+}
