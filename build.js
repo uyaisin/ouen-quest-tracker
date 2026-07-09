@@ -52,7 +52,9 @@ function main() {
   const DATA = {};
   for (const [region, names] of Object.entries(REGIONS)) {
     DATA[region] = names.map((name) => {
-      const e = prefs[name] || {};
+      // 集計側は接尾辞(都/道/府/県)を除いたキーで来る場合がある（例: 北海道→北海）。
+      // フルネームで無ければ接尾辞除去形でもフォールバック照合する。
+      const e = prefs[name] || prefs[name.replace(/(都|道|府|県)$/, "")] || {};
       const host = e.host || 0;
       const mgr = e.mgr || 0;
       const hostNames = Array.isArray(e.hostNames) ? e.hostNames : [];
