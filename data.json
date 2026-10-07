@@ -107,5 +107,7 @@
       "host": 1,
       "mgr": 0
     }
-  }
+  },
+  "fandyBase": 90,
+  "bNew": 0
 }
