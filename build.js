@@ -44,6 +44,9 @@ function todayISO() {
 function main() {
   const data = loadData();
   const prefs = data.prefs || {};
+  // manual.json の addHost＝申込データにまだ出ていない主催者を県ごとに手で足す
+  let addHost = {};
+  try { addHost = JSON.parse(fs.readFileSync(path.join(ROOT, "manual.json"), "utf8")).addHost || {}; } catch {}
   const deadline = data.deadline || "2026-09-02";
   const deadlineLabel = data.deadlineLabel || deadline.replace(/-0?/g, ".").replace(/^\./, "");
   const updated = data.updated && data.updated !== "auto" ? data.updated : todayISO();
@@ -55,7 +58,7 @@ function main() {
       // 集計側は接尾辞(都/道/府/県)を除いたキーで来る場合がある（例: 北海道→北海）。
       // フルネームで無ければ接尾辞除去形でもフォールバック照合する。
       const e = prefs[name] || prefs[name.replace(/(都|道|府|県)$/, "")] || {};
-      const host = e.host || 0;
+      const host = (e.host || 0) + (addHost[name] || 0);
       const mgr = e.mgr || 0;
       const hostNames = Array.isArray(e.hostNames) ? e.hostNames : [];
       const mgrNames = Array.isArray(e.mgrNames) ? e.mgrNames : [];
